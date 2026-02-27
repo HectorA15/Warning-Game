@@ -21,23 +21,21 @@ import java.io.InputStream;
 public class Main extends Application {
 
     private final GameCore gameCore = new GameCore();
-    TrapManager trapManager = gameCore.getTrapManager();
     private final double width = gameCore.getBoundWidth();
     private final double height = gameCore.getBoundHeight();
+    private final double MAX_DRAG_DISTANCE = 200.0;
+    private final double POWER_MULTIPLIER = 0.15;
+    TrapManager trapManager = gameCore.getTrapManager();
     private GraphicsContext gc;
-
     // ANTES: private final Player player = gameCore.getPlayer();
     private Player player = gameCore.getPlayer();
-
     private boolean isDragging = false;
     private double startDragX, startDragY;
     private double currentMouseX, currentMouseY;
-
-    private final double MAX_DRAG_DISTANCE = 200.0;
-    private final double POWER_MULTIPLIER = 0.15;
-
     private Image restartIcon;
-    private double restartBtnX, restartBtnY, restartBtnSize = 50;
+    private double restartBtnX;
+    private double restartBtnY;
+    private final double restartBtnSize = 50;
 
     private Image loadRestartIconOrNull() {
         InputStream in = getClass().getResourceAsStream("/restart.png");
@@ -64,9 +62,9 @@ public class Main extends Application {
         primaryStage.show();
 
         AnimationTimer timer = new AnimationTimer() {
+            private final double TIME_STEP = 1.0 / 60.0;
             private long lastTime = 0;
             private double accumulator = 0;
-            private final double TIME_STEP = 1.0 / 60.0;
 
             private void resetClock() {
                 lastTime = 0;
@@ -115,13 +113,10 @@ public class Main extends Application {
 
                     gameCore.restart();
 
-
                     this.trapManager = gameCore.getTrapManager();
                     this.player = gameCore.getPlayer();
 
-
                     this.isDragging = false;
-
                     timer.start();
                 }
             }
