@@ -1,14 +1,18 @@
-package dev.HectorA15.warning.core;
+package dev.hectora15.warning.core;
 
-import dev.HectorA15.warning.enums.PosPlayer;
-import dev.HectorA15.warning.enums.PosTrap;
+import dev.hectora15.warning.enums.PosPlayer;
+import dev.hectora15.warning.enums.PosTrap;
+
+import java.util.Random;
 
 public class EventManager {
     private double difficultyTimer = 0;
     private int framesSinceLastSpawn = 0;
     private int spawnCooldown = 120;
 
-    public void update(TrapManager tm, GameBounds bounds, Player player) {
+    Random random = new Random();
+
+    public void update(TrapManager tm, GameBounds bounds, Player player, Random random) {
         difficultyTimer += (1.0 / 60.0);
 
         if (difficultyTimer >= 10.0) {
@@ -21,26 +25,26 @@ public class EventManager {
         }
 
         if (framesSinceLastSpawn >= spawnCooldown) {
-            triggerEvent(tm, bounds);
+            triggerEvent(tm, bounds, random);
             framesSinceLastSpawn = 0;
         }
     }
 
-    private void triggerEvent(TrapManager tm, GameBounds bounds) {
+    private void triggerEvent(TrapManager tm, GameBounds bounds, Random random) {
         double chance = Math.random();
 
         if (spawnCooldown <= 60 && chance < 0.10) {
-            spawnWall(tm, bounds);
-            spawnWall(tm, bounds);
+            spawnWall(tm, bounds, random);
+            spawnWall(tm, bounds, random);
         } else if (chance < 0.20) {
-            spawnWall(tm, bounds);
+            spawnWall(tm, bounds, random);
         } else {
             tm.spawnRandomTrap(bounds);
         }
     }
 
-    private void spawnWall(TrapManager tm, GameBounds bounds) {
-        int wallSide = (int) (Math.random() * 4);
+    private void spawnWall(TrapManager tm, GameBounds bounds, Random random) {
+        int wallSide = random.nextInt(4);
 
         for (PosTrap pos : PosTrap.values()) {
             if (wallSide == 0 && pos.name().startsWith("TOP")) tm.forceSpawn(pos, bounds);

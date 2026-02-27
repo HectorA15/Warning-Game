@@ -1,20 +1,20 @@
-package dev.HectorA15.warning.core;
+package dev.hectora15.warning.core;
 
-import dev.HectorA15.warning.enums.PlayerState;
-import dev.HectorA15.warning.enums.PosTrap;
-import dev.HectorA15.warning.enums.TrapState;
-import dev.HectorA15.warning.traps.SpikeTrap;
-import dev.HectorA15.warning.traps.Trap;
+import dev.hectora15.warning.enums.PlayerState;
+import dev.hectora15.warning.enums.PosTrap;
+import dev.hectora15.warning.enums.TrapState;
+import dev.hectora15.warning.traps.SpikeTrap;
+import dev.hectora15.warning.traps.Trap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class TrapManager {
 
-    private ArrayList<Trap> activeTraps = new ArrayList<>();
+    private final ArrayList<Trap> activeTraps = new ArrayList<>();
 
-    public boolean update(Player player) { // Cambia void por boolean
-        boolean playerDiedThisFrame = false;
+    public void update(Player player) {
         Iterator<Trap> iterator = activeTraps.iterator();
         while (iterator.hasNext()) {
             Trap trap = iterator.next();
@@ -24,11 +24,9 @@ public class TrapManager {
                 trap.updateLogic();
                 if (trap.checkPlayerCollision(player)) {
                     player.setPlayerState(PlayerState.DEAD);
-                    playerDiedThisFrame = true;
                 }
             }
         }
-        return playerDiedThisFrame;
     }
 
     public void spawnRandomTrap(GameBounds bounds) {
@@ -59,7 +57,7 @@ public class TrapManager {
         }
     }
 
-    public ArrayList<Trap> getActiveTraps() {
+    public List<Trap> getActiveTraps() {
         return activeTraps;
     }
 }

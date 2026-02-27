@@ -1,6 +1,8 @@
-package dev.HectorA15.warning.core;
+package dev.hectora15.warning.core;
 
-import dev.HectorA15.warning.enums.PlayerState;
+import dev.hectora15.warning.enums.PlayerState;
+
+import java.util.Random;
 
 public class GameCore {
 
@@ -12,12 +14,12 @@ public class GameCore {
     Player player = new Player(boundWidth / 2, boundHeight / 2);
     TrapManager trapManager = new TrapManager();
     EventManager eventManager = new EventManager();
-
+    Random random = new Random();
     public void update() {
         player.updatePhysics();
         player.checkCollision(gameBounds);
 
-        eventManager.update(trapManager, gameBounds, player);
+        eventManager.update(trapManager, gameBounds, player, random);
         trapManager.update(player);
         if (player.getPlayerState() != PlayerState.DEAD) {
             framesSurvived++;

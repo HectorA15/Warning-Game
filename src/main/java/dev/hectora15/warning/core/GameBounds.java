@@ -1,11 +1,11 @@
-package dev.HectorA15.warning.core;
+package dev.hectora15.warning.core;
 
 public class GameBounds {
 
-    private double width;
-    private double height;
-    private double initX;
-    private double initY;
+    private final double width;
+    private final double height;
+    private final double initX;
+    private final double initY;
 
     public GameBounds(double initX, double initY, double width, double height) {
         this.initX = initX;

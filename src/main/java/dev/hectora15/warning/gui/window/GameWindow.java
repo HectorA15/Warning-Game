@@ -1,17 +1,16 @@
-package dev.HectorA15.warning.gui.window;
+package dev.hectora15.warning.gui.window;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import dev.HectorA15.warning.gui.input.InputHandler;
+import dev.hectora15.warning.gui.input.InputHandler;
 
 public class GameWindow {
 
     private final Stage stage;
     private final Pane root;
 
-    public GameWindow(Stage stage, GameCanvas gameCanvas, InputHandler inputHandler,
-                      double width, double height) {
+    public GameWindow(Stage stage, GameCanvas gameCanvas, InputHandler inputHandler) {
         this.stage = stage;
         this.root = new Pane(gameCanvas.getCanvas());
 
@@ -28,7 +27,4 @@ public class GameWindow {
         stage.show();
     }
 
-    public Pane getRoot() {
-        return root;
-    }
 }

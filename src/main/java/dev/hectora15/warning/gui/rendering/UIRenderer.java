@@ -1,4 +1,4 @@
-package dev.HectorA15.warning.gui.rendering;
+package dev.hectora15.warning.gui.rendering;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -14,7 +14,7 @@ public class UIRenderer {
     private final Image restartIcon;
     private double restartBtnX;
     private double restartBtnY;
-    private final double restartBtnSize = 50;
+    private static final double RESTART_BTN_SIZE = 50;
 
     private final double width;
     private final double height;
@@ -25,7 +25,7 @@ public class UIRenderer {
         this.restartIcon = loadRestartIcon();
 
         // Calcular posiciones del botón desde el inicio
-        this.restartBtnX = width / 2 - restartBtnSize / 2;
+        this.restartBtnX = width / 2 - RESTART_BTN_SIZE / 2;
         this.restartBtnY = height / 2 + 80;
     }
 
@@ -49,18 +49,18 @@ public class UIRenderer {
         gc.fillText("GAME OVER", width / 2, height / 2 - 40);
 
         // Botón de restart
-        restartBtnX = width / 2 - restartBtnSize / 2;
+        restartBtnX = width / 2 - RESTART_BTN_SIZE / 2;
         restartBtnY = height / 2 + 80;
-        gc.drawImage(restartIcon, restartBtnX, restartBtnY, restartBtnSize, restartBtnSize);
+        gc.drawImage(restartIcon, restartBtnX, restartBtnY, RESTART_BTN_SIZE, RESTART_BTN_SIZE);
 
         // Texto "Restart"
         gc.setFont(Font.font("Arial", 20));
-        gc.fillText("Restart", width / 2, restartBtnY + restartBtnSize + 30);
+        gc.fillText("Restart", width / 2, restartBtnY + RESTART_BTN_SIZE + 30);
     }
 
     public boolean isRestartButtonClicked(double mouseX, double mouseY) {
-        return mouseX >= restartBtnX && mouseX <= restartBtnX + restartBtnSize &&
-                mouseY >= restartBtnY && mouseY <= restartBtnY + restartBtnSize;
+        return mouseX >= restartBtnX && mouseX <= restartBtnX + RESTART_BTN_SIZE &&
+                mouseY >= restartBtnY && mouseY <= restartBtnY + RESTART_BTN_SIZE;
     }
 
     public double getRestartBtnX() {

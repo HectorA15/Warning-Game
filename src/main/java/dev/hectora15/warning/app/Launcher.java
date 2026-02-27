@@ -1,7 +1,7 @@
-package dev.HectorA15.warning.app;
+package dev.hectora15.warning.app;
 
 import javafx.application.Application;
-import dev.HectorA15.warning.gui.Main;
+import dev.hectora15.warning.gui.Main;
 
 public class Launcher {
     public static void main(String[] args) {

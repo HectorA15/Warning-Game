@@ -1,15 +1,15 @@
-package dev.HectorA15.warning.traps;
+package dev.hectora15.warning.traps;
 
-import dev.HectorA15.warning.core.GameBounds;
-import dev.HectorA15.warning.core.Player;
-import dev.HectorA15.warning.enums.PosTrap;
-import dev.HectorA15.warning.enums.TrapState;
+import dev.hectora15.warning.core.GameBounds;
+import dev.hectora15.warning.core.Player;
+import dev.hectora15.warning.enums.PosTrap;
+import dev.hectora15.warning.enums.TrapState;
 
 public class SpikeTrap extends Trap {
 
     private int framesAlive = 0;
-    private final int WARNING_DURATION = 100;
-    private final int ACTIVE_DURATION = 240;
+    private static final int WARNING_DURATION = 100;
+    private static final int ACTIVE_DURATION = 240;
 
     public SpikeTrap(PosTrap position, GameBounds bounds) {
         super(position);
@@ -18,7 +18,10 @@ public class SpikeTrap extends Trap {
 
     @Override
     protected void calculateHitbox(GameBounds bounds) {
-        double x = 0, y = 0, width = 0, height = 0;
+        double x = 0;
+        double y = 0;
+        double width = 0;
+        double height = 0;
 
         // Trap dimensions
         final double THICKNESS = 30.0;
@@ -126,10 +129,10 @@ public class SpikeTrap extends Trap {
                 this.framesAlive = 0;
             }
 
-        }else if(this.currentState == TrapState.ACTIVE){
-            if (this.framesAlive >= ACTIVE_DURATION) {
+        }else if(this.currentState == TrapState.ACTIVE && this.framesAlive >= ACTIVE_DURATION){
+
                 this.currentState = TrapState.DESTROYED;
-            }
+
         }
     }
 
@@ -138,15 +141,10 @@ public class SpikeTrap extends Trap {
 
         if(this.currentState != TrapState.ACTIVE) return false;
 
-        if( player.getX() < this.x + this.width &&
+        return player.getX() < this.x + this.width &&
                 player.getX() + player.getWidth() > this.x &&
                 player.getY() < this.y + this.height &&
-                player.getY() + player.getHeight() > this.y
-        ){
-            return true;
-        }
-
-        return false;
+                player.getY() + player.getHeight() > this.y;
     }
 
 }

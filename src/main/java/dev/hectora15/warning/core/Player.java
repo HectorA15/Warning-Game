@@ -1,15 +1,13 @@
-package dev.HectorA15.warning.core;
+package dev.hectora15.warning.core;
 
-import dev.HectorA15.warning.enums.PlayerState;
-import dev.HectorA15.warning.enums.PosPlayer;
+import dev.hectora15.warning.enums.PlayerState;
+import dev.hectora15.warning.enums.PosPlayer;
 
 public class Player {
 
-    private final double GRAVITY = 0.5;
-    private final double FORCE_MULTIPLIER = 0.1;
-    //player hitbox
-    private final double HITBOX_WIDTH = 20;
-    private final double HITBOX_HEIGHT = 20;
+    private static final double GRAVITY = 0.5;
+    private static final double HITBOX_WIDTH = 20;
+    private static final double HITBOX_HEIGHT = 20;
     private double x;
     private double y;
     private double oldX;

@@ -1,11 +1,11 @@
-package dev.HectorA15.warning.gui.loop;
+package dev.hectora15.warning.gui.loop;
 
 import javafx.animation.AnimationTimer;
-import dev.HectorA15.warning.core.GameCore;
-import dev.HectorA15.warning.core.Player;
-import dev.HectorA15.warning.enums.PlayerState;
-import dev.HectorA15.warning.gui.input.InputHandler;
-import dev.HectorA15.warning.gui.rendering.GameRenderer;
+import dev.hectora15.warning.core.GameCore;
+import dev.hectora15.warning.core.Player;
+import dev.hectora15.warning.enums.PlayerState;
+import dev.hectora15.warning.gui.input.InputHandler;
+import dev.hectora15.warning.gui.rendering.GameRenderer;
 
 public class GameLoop {
 
@@ -14,7 +14,6 @@ public class GameLoop {
     private final InputHandler inputHandler;
     private final AnimationTimer timer;
 
-    private final double TIME_STEP = 1.0 / 60.0;
     private long lastTime = 0;
     private double accumulator = 0;
 
@@ -41,9 +40,10 @@ public class GameLoop {
         lastTime = now;
         accumulator += deltaTime;
 
-        while (accumulator >= TIME_STEP) {
+        double timeStep = 1.0 / 60.0;
+        while (accumulator >= timeStep) {
             gameCore.update();
-            accumulator -= TIME_STEP;
+            accumulator -= timeStep;
         }
 
         Player player = gameCore.getPlayer();
@@ -52,29 +52,19 @@ public class GameLoop {
             double alpha = 1.0;
             renderer.render(
                     alpha,
-                    inputHandler.isDragging(),
-                    inputHandler.getStartDragX(),
-                    inputHandler.getStartDragY(),
-                    inputHandler.getCurrentMouseX(),
-                    inputHandler.getCurrentMouseY(),
-                    inputHandler.getMaxDragDistance(),
-                    inputHandler.getPowerMultiplier()
+                    inputHandler.getDragState(),
+                    inputHandler.getLaunchConfig()
             );
             renderer.renderGameOver();
             this.stop();
             return;
         }
 
-        double alpha = accumulator / TIME_STEP;
+        double alpha = accumulator / timeStep;
         renderer.render(
                 alpha,
-                inputHandler.isDragging(),
-                inputHandler.getStartDragX(),
-                inputHandler.getStartDragY(),
-                inputHandler.getCurrentMouseX(),
-                inputHandler.getCurrentMouseY(),
-                inputHandler.getMaxDragDistance(),
-                inputHandler.getPowerMultiplier()
+                inputHandler.getDragState(),
+                inputHandler.getLaunchConfig()
         );
     }
 
@@ -92,7 +82,4 @@ public class GameLoop {
         accumulator = 0;
     }
 
-    public AnimationTimer getTimer() {
-        return timer;
-    }
 }

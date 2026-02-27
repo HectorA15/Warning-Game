@@ -1,12 +1,14 @@
-package dev.HectorA15.warning.gui.input;
+package dev.hectora15.warning.gui.input;
 
-import dev.HectorA15.warning.gui.loop.GameLoop;
+import dev.hectora15.warning.gui.loop.GameLoop;
+import dev.hectora15.warning.gui.rendering.DragState;
+import dev.hectora15.warning.gui.rendering.LaunchConfig;
 import javafx.scene.layout.Pane;
-import dev.HectorA15.warning.core.GameCore;
-import dev.HectorA15.warning.core.Player;
-import dev.HectorA15.warning.enums.PlayerState;
-import dev.HectorA15.warning.enums.PosPlayer;
-import dev.HectorA15.warning.gui.rendering.GameRenderer;
+import dev.hectora15.warning.core.GameCore;
+import dev.hectora15.warning.core.Player;
+import dev.hectora15.warning.enums.PlayerState;
+import dev.hectora15.warning.enums.PosPlayer;
+import dev.hectora15.warning.gui.rendering.GameRenderer;
 
 public class InputHandler {
 
@@ -16,11 +18,13 @@ public class InputHandler {
 
     private Player player;
     private boolean isDragging = false;
-    private double startDragX, startDragY;
-    private double currentMouseX, currentMouseY;
+    private double startDragX;
+    private double startDragY;
+    private double currentMouseX;
+    private double currentMouseY;
 
-    private final double MAX_DRAG_DISTANCE = 200.0;
-    private final double POWER_MULTIPLIER = 0.15;
+    private static final double MAX_DRAG_DISTANCE = 200.0;
+    private static final double POWER_MULTIPLIER = 0.15;
 
     public InputHandler(GameCore gameCore, GameRenderer gameRenderer) {
         this.gameCore = gameCore;
@@ -40,11 +44,10 @@ public class InputHandler {
     }
 
     private void handleMouseClick(double mouseX, double mouseY) {
-        if (player.getPlayerState() == PlayerState.DEAD) {
-            if (gameRenderer.isRestartButtonClicked(mouseX, mouseY)) {
+        if (player.getPlayerState() == PlayerState.DEAD && gameRenderer.isRestartButtonClicked(mouseX, mouseY)) {
                 restart();
             }
-        }
+
     }
 
     private void handleMousePressed(double x, double y) {
@@ -70,7 +73,8 @@ public class InputHandler {
                 (rawDeltaX * rawDeltaX) + (rawDeltaY * rawDeltaY)
         );
 
-        double finalForceX, finalForceY;
+        double finalForceX;
+        double finalForceY;
 
         if (currentDragMagnitude > MAX_DRAG_DISTANCE) {
             finalForceX = (rawDeltaX / currentDragMagnitude) * MAX_DRAG_DISTANCE;
@@ -101,32 +105,21 @@ public class InputHandler {
         }
     }
 
-    // Getters para el renderer
-    public boolean isDragging() {
-        return isDragging;
+    public DragState getDragState() {
+        return new DragState(
+                isDragging,
+                startDragX,
+                startDragY,
+                currentMouseX,
+                currentMouseY
+        );
     }
 
-    public double getStartDragX() {
-        return startDragX;
+    public LaunchConfig getLaunchConfig() {
+        return new LaunchConfig(
+                MAX_DRAG_DISTANCE,
+                POWER_MULTIPLIER
+        );
     }
 
-    public double getStartDragY() {
-        return startDragY;
-    }
-
-    public double getCurrentMouseX() {
-        return currentMouseX;
-    }
-
-    public double getCurrentMouseY() {
-        return currentMouseY;
-    }
-
-    public double getMaxDragDistance() {
-        return MAX_DRAG_DISTANCE;
-    }
-
-    public double getPowerMultiplier() {
-        return POWER_MULTIPLIER;
-    }
 }

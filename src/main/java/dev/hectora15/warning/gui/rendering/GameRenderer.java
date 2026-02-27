@@ -1,14 +1,14 @@
-package dev.HectorA15.warning.gui.rendering;
+package dev.hectora15.warning.gui.rendering;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-import dev.HectorA15.warning.core.GameCore;
-import dev.HectorA15.warning.core.Player;
-import dev.HectorA15.warning.core.TrapManager;
-import dev.HectorA15.warning.enums.TrapState;
+import dev.hectora15.warning.core.GameCore;
+import dev.hectora15.warning.core.Player;
+import dev.hectora15.warning.core.TrapManager;
+import dev.hectora15.warning.enums.TrapState;
 
 public class GameRenderer {
 
@@ -29,9 +29,7 @@ public class GameRenderer {
         this.height = gameCore.getBoundHeight();
     }
 
-    public void render(double alpha, boolean isDragging, double startDragX,
-                       double startDragY, double currentMouseX, double currentMouseY,
-                       double maxDragDistance, double powerMultiplier) {
+    public void render(double alpha, DragState dragState, LaunchConfig launchConfig) {
         gc.clearRect(0, 0, width, height);
 
         // Background
@@ -59,9 +57,8 @@ public class GameRenderer {
         gc.fillRect(drawX, drawY, player.getWidth(), player.getHeight());
 
         // Trajectory
-        if (isDragging) {
-            drawTrajectory(gc, player, startDragX, startDragY, currentMouseX,
-                    currentMouseY, maxDragDistance, powerMultiplier);
+        if (dragState.isDragging()) {
+            drawTrajectory(gc, player, dragState, launchConfig);
         }
 
         // Traps
@@ -78,20 +75,22 @@ public class GameRenderer {
         });
     }
 
-    private void drawTrajectory(GraphicsContext gc, Player player, double startDragX,
-                                double startDragY, double currentMouseX, double currentMouseY,
-                                double maxDragDistance, double powerMultiplier) {
-        double rawDeltaX = startDragX - currentMouseX;
-        double rawDeltaY = startDragY - currentMouseY;
+    private void drawTrajectory(GraphicsContext gc, Player player, DragState dragState,
+                                LaunchConfig launchConfig) {
+        double rawDeltaX = dragState.getStartX() - dragState.getCurrentX();
+        double rawDeltaY = dragState.getStartY() - dragState.getCurrentY();
         double magnitude = Math.sqrt((rawDeltaX * rawDeltaX) + (rawDeltaY * rawDeltaY));
 
-        double simVelX, simVelY;
-        if (magnitude > maxDragDistance) {
-            simVelX = (rawDeltaX / magnitude) * maxDragDistance * powerMultiplier;
-            simVelY = (rawDeltaY / magnitude) * maxDragDistance * powerMultiplier;
+        double simVelX;
+        double simVelY;
+        if (magnitude > launchConfig.getMaxDragDistance()) {
+            simVelX = (rawDeltaX / magnitude) * launchConfig.getMaxDragDistance()
+                    * launchConfig.getPowerMultiplier();
+            simVelY = (rawDeltaY / magnitude) * launchConfig.getMaxDragDistance()
+                    * launchConfig.getPowerMultiplier();
         } else {
-            simVelX = rawDeltaX * powerMultiplier;
-            simVelY = rawDeltaY * powerMultiplier;
+            simVelX = rawDeltaX * launchConfig.getPowerMultiplier();
+            simVelY = rawDeltaY * launchConfig.getPowerMultiplier();
         }
 
         double simX = player.getX() + player.getWidth() / 2;

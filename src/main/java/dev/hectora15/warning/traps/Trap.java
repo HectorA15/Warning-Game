@@ -1,22 +1,24 @@
-package dev.HectorA15.warning.traps;
+package dev.hectora15.warning.traps;
 
-import dev.HectorA15.warning.core.GameBounds;
-import dev.HectorA15.warning.core.Player;
-import dev.HectorA15.warning.enums.PosTrap;
-import dev.HectorA15.warning.enums.TrapState;
+import dev.hectora15.warning.core.GameBounds;
+import dev.hectora15.warning.core.Player;
+import dev.hectora15.warning.enums.PosTrap;
+import dev.hectora15.warning.enums.TrapState;
 
 public abstract class Trap {
-    protected double x, y, width, height;
+    protected double x;
+    protected double y;
+    protected double width;
+    protected double height;
     protected PosTrap position;
     protected TrapState currentState;
 
-    // El constructor ahora solo pide la posición
-    public Trap(PosTrap position) {
+
+    protected Trap(PosTrap position) {
         this.position = position;
         this.currentState = TrapState.WARNING;
     }
 
-    // Obligamos a los hijos a crear este método
     protected abstract void calculateHitbox(GameBounds bounds);
 
     public abstract void updateLogic();

@@ -1,4 +1,4 @@
-package dev.HectorA15.warning.gui.window;
+package dev.hectora15.warning.gui.window;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

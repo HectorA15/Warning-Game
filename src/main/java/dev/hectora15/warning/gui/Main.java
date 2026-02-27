@@ -1,23 +1,23 @@
-package dev.HectorA15.warning.gui;
+package dev.hectora15.warning.gui;
 
-import dev.HectorA15.warning.gui.window.GameCanvas;
+import dev.hectora15.warning.gui.window.GameCanvas;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import dev.HectorA15.warning.core.GameCore;
-import dev.HectorA15.warning.gui.input.InputHandler;
-import dev.HectorA15.warning.gui.loop.GameLoop;
-import dev.HectorA15.warning.gui.rendering.GameRenderer;
-import dev.HectorA15.warning.gui.rendering.UIRenderer;
-import dev.HectorA15.warning.gui.window.GameWindow;
+import dev.hectora15.warning.core.GameCore;
+import dev.hectora15.warning.gui.input.InputHandler;
+import dev.hectora15.warning.gui.loop.GameLoop;
+import dev.hectora15.warning.gui.rendering.GameRenderer;
+import dev.hectora15.warning.gui.rendering.UIRenderer;
+import dev.hectora15.warning.gui.window.GameWindow;
 
 public class Main extends Application {
 
-    private GameCore gameCore;
-    private GameLoop gameLoop;
-    private InputHandler inputHandler;
 
     @Override
     public void start(Stage primaryStage) {
+        GameCore gameCore;
+        GameLoop gameLoop;
+        InputHandler inputHandler;
         // Inicializar componentes
         gameCore = new GameCore();
 
@@ -47,9 +47,7 @@ public class Main extends Application {
         GameWindow gameWindow = new GameWindow(
                 primaryStage,
                 gameCanvas,
-                inputHandler,
-                gameCore.getBoundWidth(),
-                gameCore.getBoundHeight()
+                inputHandler
         );
 
         // start game
