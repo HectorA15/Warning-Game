@@ -1,10 +1,10 @@
-package org.example.core;
+package dev.HectorA15.warning.core;
 
-import org.example.enums.PlayerState;
-import org.example.enums.PosTrap;
-import org.example.enums.TrapState;
-import org.example.traps.SpikeTrap;
-import org.example.traps.Trap;
+import dev.HectorA15.warning.enums.PlayerState;
+import dev.HectorA15.warning.enums.PosTrap;
+import dev.HectorA15.warning.enums.TrapState;
+import dev.HectorA15.warning.traps.SpikeTrap;
+import dev.HectorA15.warning.traps.Trap;
 
 import java.util.ArrayList;
 import java.util.Iterator;

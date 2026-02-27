@@ -1,4 +1,4 @@
-package org.example.enums;
+package dev.HectorA15.warning.enums;
 
 import java.util.Random;
 

@@ -1,7 +1,7 @@
-package org.example.core;
+package dev.HectorA15.warning.core;
 
-import org.example.enums.PlayerState;
-import org.example.enums.PosPlayer;
+import dev.HectorA15.warning.enums.PlayerState;
+import dev.HectorA15.warning.enums.PosPlayer;
 
 public class Player {
 

@@ -1,9 +1,9 @@
-package org.example.traps;
+package dev.HectorA15.warning.traps;
 
-import org.example.core.GameBounds;
-import org.example.core.Player;
-import org.example.enums.PosTrap;
-import org.example.enums.TrapState;
+import dev.HectorA15.warning.core.GameBounds;
+import dev.HectorA15.warning.core.Player;
+import dev.HectorA15.warning.enums.PosTrap;
+import dev.HectorA15.warning.enums.TrapState;
 
 public class SpikeTrap extends Trap {
 

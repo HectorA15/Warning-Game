@@ -1,4 +1,6 @@
-package org.example.core;
+package dev.HectorA15.warning.core;
+
+import dev.HectorA15.warning.enums.PlayerState;
 
 public class GameCore {
 
@@ -17,7 +19,7 @@ public class GameCore {
 
         eventManager.update(trapManager, gameBounds, player);
         trapManager.update(player);
-        if (player.getPlayerState() != org.example.enums.PlayerState.DEAD) {
+        if (player.getPlayerState() != PlayerState.DEAD) {
             framesSurvived++;
         }
     }

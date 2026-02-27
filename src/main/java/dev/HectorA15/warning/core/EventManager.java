@@ -1,7 +1,7 @@
-package org.example.core;
+package dev.HectorA15.warning.core;
 
-import org.example.enums.PosPlayer;
-import org.example.enums.PosTrap;
+import dev.HectorA15.warning.enums.PosPlayer;
+import dev.HectorA15.warning.enums.PosTrap;
 
 public class EventManager {
     private double difficultyTimer = 0;

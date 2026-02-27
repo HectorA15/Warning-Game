@@ -1,4 +1,4 @@
-package org.example.core;
+package dev.HectorA15.warning.core;
 
 public class GameBounds {
 

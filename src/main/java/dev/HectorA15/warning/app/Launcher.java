@@ -1,7 +1,7 @@
-package org.example;
+package dev.HectorA15.warning.app;
 
 import javafx.application.Application;
-import org.example.gui.Main;
+import dev.HectorA15.warning.gui.Main;
 
 public class Launcher {
     public static void main(String[] args) {
