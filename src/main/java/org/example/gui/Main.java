@@ -240,7 +240,7 @@ public class Main extends Application {
             if (simY > gameCore.getBoundHeight()) break;
         }
     }
-
+        //gola
     private void drawGameOver(GraphicsContext gc) {
         gc.setFill(Color.rgb(0, 0, 0, 0.6));
         gc.fillRect(0, 0, width, height);
