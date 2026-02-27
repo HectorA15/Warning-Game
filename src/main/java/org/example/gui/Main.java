@@ -58,8 +58,6 @@ public class Main extends Application {
 
                 double deltaTime = (now - lastTime) / 1_000_000_000.0;
                 lastTime = now;
-
-                // 2. Acumulamos ese tiempo
                 accumulator += deltaTime;
 
 
@@ -67,8 +65,17 @@ public class Main extends Application {
                     gameCore.update();
                     accumulator -= TIME_STEP;
                 }
-                double alpha = accumulator / TIME_STEP;
 
+                if (player.getPlayerState() == PlayerState.DEAD) {
+                    double alpha = 0;
+                    renderGraphics(gc, alpha);
+                    drawGameOver(gc);
+                    this.stop();
+                    return;
+                }
+
+
+                double alpha = accumulator / TIME_STEP;
                 gc.clearRect(0, 0, width, height);
                 renderGraphics(gc, alpha);
             }
@@ -190,5 +197,20 @@ public class Main extends Application {
 
             if (simY > gameCore.getBoundHeight()) break;
         }
+    }
+
+    private void drawGameOver(GraphicsContext gc) {
+
+        gc.setFill(Color.rgb(0, 0, 0, 0.6));
+        gc.fillRect(0, 0, width, height);
+
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 80));
+        gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+        gc.fillText("GAME OVER", width / 2, height / 2 - 40);
+
+        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.NORMAL, 30));
+        gc.fillText("Sobreviviste: " + gameCore.getScore() + " segundos", width / 2, height / 2 + 40);
     }
 }

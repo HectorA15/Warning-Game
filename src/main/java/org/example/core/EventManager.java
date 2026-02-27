@@ -1,8 +1,5 @@
-package org.example;
+package org.example.core;
 
-import org.example.core.GameBounds;
-import org.example.core.Player;
-import org.example.core.TrapManager;
 import org.example.enums.PosPlayer;
 import org.example.enums.PosTrap;
 

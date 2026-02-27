@@ -13,7 +13,8 @@ public class TrapManager {
 
     private ArrayList<Trap> activeTraps = new ArrayList<>();
 
-    public void update(Player player) {
+    public boolean update(Player player) { // Cambia void por boolean
+        boolean playerDiedThisFrame = false;
         Iterator<Trap> iterator = activeTraps.iterator();
         while (iterator.hasNext()) {
             Trap trap = iterator.next();
@@ -23,9 +24,11 @@ public class TrapManager {
                 trap.updateLogic();
                 if (trap.checkPlayerCollision(player)) {
                     player.setPlayerState(PlayerState.DEAD);
+                    playerDiedThisFrame = true;
                 }
             }
         }
+        return playerDiedThisFrame;
     }
 
     public void spawnRandomTrap(GameBounds bounds) {

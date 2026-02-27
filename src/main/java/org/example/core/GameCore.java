@@ -1,7 +1,5 @@
 package org.example.core;
 
-import org.example.EventManager;
-
 public class GameCore {
 
 
