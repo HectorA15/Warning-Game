@@ -51,8 +51,7 @@ public class Main extends Application {
         restartIcon = loadRestartIconOrNull();
         if (restartIcon == null) {
             throw new IllegalStateException(
-                    "No se encontró el recurso /restart.png en el classpath. " +
-                            "Coloca el archivo en src/main/resources/restart.png"
+                    " /restart.png not found in classpath"
             );
         }
 
