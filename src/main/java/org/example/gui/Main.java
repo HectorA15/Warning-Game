@@ -8,6 +8,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import org.example.core.GameCore;
 import org.example.core.Player;
@@ -37,6 +40,8 @@ public class Main extends Application {
     private double restartBtnY;
     private final double restartBtnSize = 50;
 
+    private static final String CREDITS = "@HectorA ";
+
     private Image loadRestartIconOrNull() {
         InputStream in = getClass().getResourceAsStream("/restart.png");
         if (in == null) return null;
@@ -60,6 +65,8 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
+
+
 
         AnimationTimer timer = new AnimationTimer() {
             private final double TIME_STEP = 1.0 / 60.0;
@@ -162,17 +169,26 @@ public class Main extends Application {
     }
 
     private void renderGraphics(GraphicsContext gc, double alpha) {
-        gc.setFill(javafx.scene.paint.Color.rgb(26, 26, 28));
+        //BACKGROUND COLOR
+        gc.setFill(Color.rgb(26, 26, 28));
         gc.fillRect(0, 0, width, height);
 
-        gc.setFill(javafx.scene.paint.Color.rgb(40, 42, 45));
-        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 250));
-        gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+        // SCORE
+        gc.setFill(Color.rgb(40, 42, 45));
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 250));
+        gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText(String.valueOf(gameCore.getScore()), width / 2, height / 2 + 80);
 
         double drawX = player.getOldX() + (player.getX() - player.getOldX()) * alpha;
         double drawY = player.getOldY() + (player.getY() - player.getOldY()) * alpha;
 
+        //CREDITS
+        gc.setFill(Color.rgb(40, 42, 45));
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText(CREDITS, 10, height - 10);
+
+        //PLAYER COLOR
         gc.setFill(Color.BLUE);
         gc.fillRect(drawX, drawY, player.getWidth(), player.getHeight());
 
@@ -230,15 +246,15 @@ public class Main extends Application {
         gc.fillRect(0, 0, width, height);
 
         gc.setFill(Color.WHITE);
-        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 80));
-        gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, 80));
+        gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText("GAME OVER", width / 2, height / 2 - 40);
 
         restartBtnX = width / 2 - restartBtnSize / 2;
         restartBtnY = height / 2 + 80;
         gc.drawImage(restartIcon, restartBtnX, restartBtnY, restartBtnSize, restartBtnSize);
 
-        gc.setFont(javafx.scene.text.Font.font("Arial", 20));
+        gc.setFont(Font.font("Arial", 20));
         gc.fillText("Restart", width / 2, restartBtnY + restartBtnSize + 30);
     }
 }
