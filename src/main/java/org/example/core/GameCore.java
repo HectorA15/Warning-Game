@@ -45,4 +45,11 @@ public class GameCore {
     public int getScore() {
         return framesSurvived / 60;
     }
+
+    public void restart() {
+        this.framesSurvived = 0;
+        this.player = new Player(boundWidth / 2, boundHeight / 2);
+        this.trapManager = new TrapManager();
+        this.eventManager = new EventManager();
+    }
 }
