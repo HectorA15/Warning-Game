@@ -1,14 +1,14 @@
 package dev.hectora15.warning.gui;
 
-import dev.hectora15.warning.gui.window.GameCanvas;
-import javafx.application.Application;
-import javafx.stage.Stage;
 import dev.hectora15.warning.core.GameCore;
 import dev.hectora15.warning.gui.input.InputHandler;
 import dev.hectora15.warning.gui.loop.GameLoop;
 import dev.hectora15.warning.gui.rendering.GameRenderer;
 import dev.hectora15.warning.gui.rendering.UIRenderer;
+import dev.hectora15.warning.gui.window.GameCanvas;
 import dev.hectora15.warning.gui.window.GameWindow;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 public class Main extends Application {
 
@@ -18,7 +18,6 @@ public class Main extends Application {
         GameCore gameCore;
         GameLoop gameLoop;
         InputHandler inputHandler;
-        // Inicializar componentes
         gameCore = new GameCore();
 
         GameCanvas gameCanvas = new GameCanvas(
@@ -41,7 +40,6 @@ public class Main extends Application {
 
         gameLoop = new GameLoop(gameCore, gameRenderer, inputHandler);
 
-        // Conectar el gameLoop al inputHandler para que pueda reiniciarlo
         inputHandler.setGameLoop(gameLoop);
 
         GameWindow gameWindow = new GameWindow(
