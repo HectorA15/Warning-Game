@@ -1,4 +1,4 @@
-package dev.hectora15.warning.gui;
+package dev.hectora15.warning.gui.screens;
 
 import dev.hectora15.warning.core.GameCore;
 import dev.hectora15.warning.gui.input.InputHandler;
@@ -6,19 +6,14 @@ import dev.hectora15.warning.gui.loop.GameLoop;
 import dev.hectora15.warning.gui.rendering.GameRenderer;
 import dev.hectora15.warning.gui.rendering.UIRenderer;
 import dev.hectora15.warning.gui.window.GameCanvas;
-import dev.hectora15.warning.gui.window.GameWindow;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import dev.hectora15.warning.gui.window.SceneManager;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 
-public class Main extends Application {
+public class GameScreen {
 
-
-    @Override
-    public void start(Stage primaryStage) {
-        GameCore gameCore;
-        GameLoop gameLoop;
-        InputHandler inputHandler;
-        gameCore = new GameCore();
+    public static Scene create(SceneManager sceneManager) {
+        GameCore gameCore = new GameCore();
 
         GameCanvas gameCanvas = new GameCanvas(
                 gameCore.getBoundWidth(),
@@ -32,23 +27,21 @@ public class Main extends Application {
 
         GameRenderer gameRenderer = new GameRenderer(
                 gameCore,
-                gameCanvas.getGraphicsContext2D(),
+                gameCanvas.getGraphicsContext(),
                 uiRenderer
         );
 
-        inputHandler = new InputHandler(gameCore, gameRenderer);
-
-        gameLoop = new GameLoop(gameCore, gameRenderer, inputHandler);
-
+        InputHandler inputHandler = new InputHandler(gameCore, gameRenderer);
+        GameLoop gameLoop = new GameLoop(gameCore, gameRenderer, inputHandler);
         inputHandler.setGameLoop(gameLoop);
 
-        GameWindow gameWindow = new GameWindow(
-                primaryStage,
-                inputHandler
-        );
+        // Preparamos la raíz y los eventos
+        Pane root = new Pane(gameCanvas.getCanvas());
+        inputHandler.setupMouseEvents(root);
 
-        // start game
-        gameWindow.show();
+        // Arrancamos el motor de físicas y dibujo
         gameLoop.start();
+
+        return new Scene(root);
     }
 }
