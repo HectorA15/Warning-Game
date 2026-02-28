@@ -1,5 +1,6 @@
 package dev.hectora15.warning.gui.screens;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -9,11 +10,16 @@ public class SceneManager {
     public SceneManager(Stage stage) {
         this.stage = stage;
         this.stage.setTitle("Warning Game");
-        this.stage.setResizable(false);
+        this.stage.setResizable(true);
     }
 
-    public void setScene(Scene scene) {
-        stage.setScene(scene);
-        stage.show();
+    public void setScreen(Parent newRoot) {
+        if (stage.getScene() == null) {
+            Scene masterScene = new Scene(newRoot, 630, 720);
+            stage.setScene(masterScene);
+            stage.show();
+        } else {
+            stage.getScene().setRoot(newRoot);
+        }
     }
 }

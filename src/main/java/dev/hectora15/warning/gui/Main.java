@@ -10,10 +10,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         SceneManager sceneManager = new SceneManager(primaryStage);
-
-        double width = 650;
-        double height = 750;
-
-        sceneManager.setScene(MenuScreen.create(sceneManager, width, height));
+        sceneManager.setScreen(MenuScreen.create(sceneManager));
     }
 }

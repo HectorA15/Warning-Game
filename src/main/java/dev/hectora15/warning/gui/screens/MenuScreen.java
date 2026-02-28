@@ -1,7 +1,7 @@
 package dev.hectora15.warning.gui.screens;
 
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -13,13 +13,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.image.ImageView;
 
 public class MenuScreen {
+
     private MenuScreen() {
-        /* This utility class should not be instantiated */
     }
 
-
-    public static Scene create(SceneManager sceneManager, double width, double height) {
-
+    public static Parent create(SceneManager sceneManager) {
         Text title = new Text("WARNING");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 80));
         title.setFill(Color.WHITE);
@@ -37,19 +35,16 @@ public class MenuScreen {
         exitBtn.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         exitBtn.setStyle("-fx-background-color: #eebb00; -fx-text-fill: black; -fx-padding: 10 40; -fx-background-radius: 10; -fx-cursor: hand;");
 
-
-
         startBtn.setOnAction(e -> {
-            sceneManager.setScene(GameScreen.create(sceneManager));
+            sceneManager.setScreen(GameScreen.create(sceneManager));
         });
 
         settingsBtn.setOnAction(e -> {
-
         });
 
-       exitBtn.setOnAction(e -> {
+        exitBtn.setOnAction(e -> {
             System.exit(0);
-       });
+        });
 
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #1a1a1c;");
@@ -62,9 +57,6 @@ public class MenuScreen {
         root.setTop(settingsBtn);
         BorderPane.setAlignment(settingsBtn, Pos.TOP_RIGHT);
 
-        return new Scene(root, width, height);
+        return root;
     }
-
-
-
 }

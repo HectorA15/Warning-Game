@@ -7,9 +7,10 @@ import dev.hectora15.warning.gui.loop.GameLoop;
 import dev.hectora15.warning.gui.rendering.GameRenderer;
 import dev.hectora15.warning.gui.rendering.UIRenderer;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -21,7 +22,7 @@ public class GameScreen {
     private GameScreen() {
     }
 
-    public static Scene create(SceneManager sceneManager) {
+    public static Parent create(SceneManager sceneManager) {
         GameCore gameCore = new GameCore();
 
         FileManager.initialize();
@@ -71,30 +72,39 @@ public class GameScreen {
         restartBtn.setStyle("-fx-background-color: #eebb00; -fx-text-fill: black; -fx-padding: 10 30; -fx-cursor: hand; -fx-background-radius: 10;");
 
         restartBtn.setOnAction(e -> {
-            sceneManager.setScene(GameScreen.create(sceneManager));
+            sceneManager.setScreen(GameScreen.create(sceneManager));
         });
 
         gameOverOverlay.getChildren().addAll(gameOverText, scoreText, highScoreText, restartBtn);
 
         gameLoop.setOnGameOverEvent(() -> {
             int finalScore = gameCore.getScore();
+
             scoreText.setText("Score:  " + finalScore);
 
             if (finalScore > initialHighScore) {
                 FileManager.saveHighScore(finalScore);
-                highScoreText.setText("NEW High Score: " + finalScore);
+                highScoreText.setText("New High Score: " + finalScore + " seconds");
+                highScoreText.setFill(Color.web("#00FF00"));
             } else {
-                highScoreText.setText("High Score: " + initialHighScore);
+                highScoreText.setText("High Score: " + initialHighScore + " seconds");
             }
 
             gameOverOverlay.setVisible(true);
         });
 
-        Pane root = new Pane(gameCanvas, gameOverOverlay);
-        inputHandler.setupMouseEvents(root);
+        Pane gameArea = new Pane(gameCanvas, gameOverOverlay);
+        gameArea.setPrefSize(gameCore.getBoundWidth(), gameCore.getBoundHeight());
+        gameArea.setMinSize(gameCore.getBoundWidth(), gameCore.getBoundHeight());
+        gameArea.setMaxSize(gameCore.getBoundWidth(), gameCore.getBoundHeight());
+
+        inputHandler.setupMouseEvents(gameArea);
 
         gameLoop.start();
 
-        return new Scene(root, gameCore.getBoundWidth(), gameCore.getBoundHeight());
+        StackPane rootWindow = new StackPane(gameArea);
+        rootWindow.setStyle("-fx-background-color: #121212;");
+
+        return rootWindow;
     }
 }
