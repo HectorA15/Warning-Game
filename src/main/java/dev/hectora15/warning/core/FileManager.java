@@ -8,8 +8,7 @@ import java.nio.file.Paths;
 public class FileManager {
 
 
-    private static final String USER_HOME = System.getProperty("user.home");
-    private static final Path APP_DIR = Paths.get(USER_HOME, ".warningGame");
+    private static final Path APP_DIR = Paths.get("data");
     private static final Path SCORE_FILE = APP_DIR.resolve("highscore.dat");
 
 

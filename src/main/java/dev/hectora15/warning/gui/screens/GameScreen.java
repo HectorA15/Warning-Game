@@ -17,10 +17,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class GameScreen {
+    private GameScreen() {
+        /* This utility class should not be instantiated */
+    }
+
 
     public static Scene create(SceneManager sceneManager) {
         GameCore gameCore = new GameCore();
-        FileManager fileManager = new FileManager();
+
+        FileManager.initialize();
 
         GameCanvas gameCanvas = new GameCanvas(
                 gameCore.getBoundWidth(),
@@ -56,7 +61,7 @@ public class GameScreen {
         scoreText.setFont(Font.font("Arial", FontWeight.NORMAL, 30));
         scoreText.setFill(Color.WHITE);
 
-        Text highScoreText = new Text("High Score: "+ fileManager.loadHighScore() + " seconds");
+        Text highScoreText = new Text("High Score: "+ FileManager.loadHighScore());
         highScoreText.setFont(Font.font("Arial",  FontWeight.NORMAL, 30));
         highScoreText.setFill(Color.YELLOW);
 
@@ -71,8 +76,23 @@ public class GameScreen {
         gameOverOverlay.getChildren().addAll(gameOverText, scoreText, highScoreText, restartBtn);
 
         gameLoop.setOnGameOverEvent(() -> {
-            scoreText.setText("you survived " + gameCore.getScore() + " seconds this time");
+            int finalScore = gameCore.getScore();
+
+
+            scoreText.setText("Score:  " + finalScore );
+
+            int currentHighScore = FileManager.loadHighScore();
+
+            if (finalScore > currentHighScore) {
+                FileManager.saveHighScore(finalScore);
+                highScoreText.setText("New High Score: " + finalScore + " seconds");
+            } else {
+                highScoreText.setText("High Score: " + currentHighScore + " seconds");
+            }
+
             gameOverOverlay.setVisible(true);
+
+
         });
 
         Pane root = new Pane(gameCanvas, gameOverOverlay);
