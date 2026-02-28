@@ -17,15 +17,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class GameScreen {
-    private GameScreen() {
-        /* This utility class should not be instantiated */
-    }
 
+    private GameScreen() {
+    }
 
     public static Scene create(SceneManager sceneManager) {
         GameCore gameCore = new GameCore();
 
         FileManager.initialize();
+
+        final int initialHighScore = FileManager.loadHighScore();
 
         GameCanvas gameCanvas = new GameCanvas(
                 gameCore.getBoundWidth(),
@@ -50,8 +51,8 @@ public class GameScreen {
         VBox gameOverOverlay = new VBox(20);
         gameOverOverlay.setAlignment(Pos.CENTER);
         gameOverOverlay.setPrefSize(gameCore.getBoundWidth(), gameCore.getBoundHeight());
-        gameOverOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);"); // Fondo oscuro transparente
-        gameOverOverlay.setVisible(false); // Invisible al inicio
+        gameOverOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
+        gameOverOverlay.setVisible(false);
 
         Text gameOverText = new Text("GAME OVER");
         gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 80));
@@ -61,8 +62,8 @@ public class GameScreen {
         scoreText.setFont(Font.font("Arial", FontWeight.NORMAL, 30));
         scoreText.setFill(Color.WHITE);
 
-        Text highScoreText = new Text("High Score: "+ FileManager.loadHighScore());
-        highScoreText.setFont(Font.font("Arial",  FontWeight.NORMAL, 30));
+        Text highScoreText = new Text("High Score: " + initialHighScore + " seconds");
+        highScoreText.setFont(Font.font("Arial", FontWeight.NORMAL, 30));
         highScoreText.setFill(Color.YELLOW);
 
         Button restartBtn = new Button("RESTART");
@@ -77,22 +78,16 @@ public class GameScreen {
 
         gameLoop.setOnGameOverEvent(() -> {
             int finalScore = gameCore.getScore();
+            scoreText.setText("Score:  " + finalScore);
 
-
-            scoreText.setText("Score:  " + finalScore );
-
-            int currentHighScore = FileManager.loadHighScore();
-
-            if (finalScore > currentHighScore) {
+            if (finalScore > initialHighScore) {
                 FileManager.saveHighScore(finalScore);
-                highScoreText.setText("New High Score: " + finalScore + " seconds");
+                highScoreText.setText("NEW High Score: " + finalScore);
             } else {
-                highScoreText.setText("High Score: " + currentHighScore + " seconds");
+                highScoreText.setText("High Score: " + initialHighScore);
             }
 
             gameOverOverlay.setVisible(true);
-
-
         });
 
         Pane root = new Pane(gameCanvas, gameOverOverlay);
