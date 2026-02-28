@@ -5,8 +5,6 @@ import dev.hectora15.warning.gui.input.InputHandler;
 import dev.hectora15.warning.gui.loop.GameLoop;
 import dev.hectora15.warning.gui.rendering.GameRenderer;
 import dev.hectora15.warning.gui.rendering.UIRenderer;
-import dev.hectora15.warning.gui.window.GameCanvas;
-import dev.hectora15.warning.gui.window.SceneManager;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -25,9 +23,10 @@ public class GameScreen {
                 gameCore.getBoundHeight()
         );
 
+        // CORRECCIÓN 1: gameCanvas.getGraphicsContext2D() en minúscula
         GameRenderer gameRenderer = new GameRenderer(
                 gameCore,
-                gameCanvas.getGraphicsContext(),
+                gameCanvas.getGraphicsContext2D(),
                 uiRenderer
         );
 
@@ -35,13 +34,13 @@ public class GameScreen {
         GameLoop gameLoop = new GameLoop(gameCore, gameRenderer, inputHandler);
         inputHandler.setGameLoop(gameLoop);
 
-        // Preparamos la raíz y los eventos
-        Pane root = new Pane(gameCanvas.getCanvas());
+        // CORRECCIÓN 2: Le pasamos gameCanvas directamente al Pane
+        Pane root = new Pane(gameCanvas);
         inputHandler.setupMouseEvents(root);
 
-        // Arrancamos el motor de físicas y dibujo
         gameLoop.start();
 
-        return new Scene(root);
+        // CORRECCIÓN 3: Forzamos el tamaño de la escena para que no se deforme
+        return new Scene(root, gameCore.getBoundWidth(), gameCore.getBoundHeight());
     }
 }

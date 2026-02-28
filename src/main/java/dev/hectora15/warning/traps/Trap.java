@@ -12,7 +12,8 @@ public abstract class Trap {
     protected double height;
     protected PosTrap position;
     protected TrapState currentState;
-
+    protected int warningDuration;
+    protected int activeDuration;
 
     protected Trap(PosTrap position) {
         this.position = position;
@@ -44,4 +45,8 @@ public abstract class Trap {
     public double getHeight(){
         return this.height;
     }
+    public int getWarningDuration(){return this.warningDuration;}
+    public int getActiveDuration(){return this.activeDuration;}
+    public void setWarningDuration(int duration){this.warningDuration = duration;}
+    public void setActiveDuration(int duration){this.activeDuration = duration;}
 }

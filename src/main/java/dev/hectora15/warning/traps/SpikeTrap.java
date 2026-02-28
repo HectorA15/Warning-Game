@@ -8,12 +8,13 @@ import dev.hectora15.warning.enums.TrapState;
 public class SpikeTrap extends Trap {
 
     private int framesAlive = 0;
-    private static final int WARNING_DURATION = 100;
-    private static final int ACTIVE_DURATION = 240;
+    private static int warningDuration = 100;
+    private static int activeDuration = 240;
 
     public SpikeTrap(PosTrap position, GameBounds bounds) {
         super(position);
         calculateHitbox(bounds);
+
     }
 
     @Override
@@ -124,12 +125,12 @@ public class SpikeTrap extends Trap {
         this.framesAlive++;
         if(this.currentState == TrapState.WARNING){
 
-            if (this.framesAlive >= WARNING_DURATION) {
+            if (this.framesAlive >= warningDuration) {
                 this.currentState = TrapState.ACTIVE;
                 this.framesAlive = 0;
             }
 
-        }else if(this.currentState == TrapState.ACTIVE && this.framesAlive >= ACTIVE_DURATION){
+        }else if(this.currentState == TrapState.ACTIVE && this.framesAlive >= activeDuration){
 
                 this.currentState = TrapState.DESTROYED;
 

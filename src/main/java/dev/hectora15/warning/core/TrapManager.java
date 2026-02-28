@@ -30,6 +30,10 @@ public class TrapManager {
     }
 
     public void spawnRandomTrap(GameBounds bounds) {
+        if (activeTraps.size() >= 12) {
+            return;
+        }
+
         PosTrap posTrap;
         boolean occupied;
 
@@ -60,4 +64,7 @@ public class TrapManager {
     public List<Trap> getActiveTraps() {
         return activeTraps;
     }
+
+
+
 }

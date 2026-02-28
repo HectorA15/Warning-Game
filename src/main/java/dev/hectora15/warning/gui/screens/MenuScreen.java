@@ -1,6 +1,5 @@
 package dev.hectora15.warning.gui.screens;
 
-import dev.hectora15.warning.gui.window.SceneManager;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

@@ -1,4 +1,4 @@
-package dev.hectora15.warning.gui.window;
+package dev.hectora15.warning.gui.screens;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
