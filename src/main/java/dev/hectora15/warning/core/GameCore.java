@@ -8,13 +8,16 @@ public class GameCore {
 
 
     private int framesSurvived = 0;
-    double boundWidth = 650;
-    double boundHeight = 750;
+    double boundWidth = 630;
+    double boundHeight = 720;
     GameBounds gameBounds = new GameBounds(0, 0, boundWidth, boundHeight);
     Player player = new Player(boundWidth / 2, boundHeight / 2);
     TrapManager trapManager = new TrapManager();
     EventManager eventManager = new EventManager();
     Random random = new Random();
+    FileManager fileManager = new FileManager();
+
+
     public void update() {
         player.updatePhysics();
         player.checkCollision(gameBounds);
@@ -23,6 +26,8 @@ public class GameCore {
         trapManager.update(player);
         if (player.getPlayerState() != PlayerState.DEAD) {
             framesSurvived++;
+        }else{
+            fileManager.saveHighScore(getScore());
         }
     }
 

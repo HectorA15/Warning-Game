@@ -49,4 +49,6 @@ public abstract class Trap {
     public int getActiveDuration(){return this.activeDuration;}
     public void setWarningDuration(int duration){this.warningDuration = duration;}
     public void setActiveDuration(int duration){this.activeDuration = duration;}
+
+
 }

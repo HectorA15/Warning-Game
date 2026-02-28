@@ -10,7 +10,7 @@ public class SpikeTrap extends Trap {
     private int framesAlive = 0;
     private static int warningDuration = 100;
     private static int activeDuration = 240;
-
+    private static final double THICKNESS = 25.0;
     public SpikeTrap(PosTrap position, GameBounds bounds) {
         super(position);
         calculateHitbox(bounds);
@@ -24,8 +24,6 @@ public class SpikeTrap extends Trap {
         double width = 0;
         double height = 0;
 
-        // Trap dimensions
-        final double THICKNESS = 30.0;
         double thirdHeight = bounds.getHeight() / 3.0;
         double thirdWidth = bounds.getWidth() / 3.0;
 
@@ -148,6 +146,17 @@ public class SpikeTrap extends Trap {
                 player.getY() + player.getHeight() > this.y;
     }
 
+    public int getFramesAlive() {
+        return framesAlive;
+    }
+
+    public int getWarningDuration() {
+        return warningDuration;
+    }
+
+    public double getTHICKNESS() {
+        return THICKNESS;
+    }
 }
 
 

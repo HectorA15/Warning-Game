@@ -13,7 +13,7 @@ public class GameLoop {
     private final GameRenderer renderer;
     private final InputHandler inputHandler;
     private final AnimationTimer timer;
-
+    private Runnable onGameOverEvent;
     private long lastTime = 0;
     private double accumulator = 0;
 
@@ -55,7 +55,10 @@ public class GameLoop {
                     inputHandler.getDragState(),
                     inputHandler.getLaunchConfig()
             );
-            renderer.renderGameOver();
+
+            if (onGameOverEvent != null) {
+                onGameOverEvent.run();
+            }
             this.stop();
             return;
         }
@@ -71,6 +74,10 @@ public class GameLoop {
     public void start() {
         resetClock();
         timer.start();
+    }
+
+    public void setOnGameOverEvent(Runnable event) {
+        this.onGameOverEvent = event;
     }
 
     public void stop() {

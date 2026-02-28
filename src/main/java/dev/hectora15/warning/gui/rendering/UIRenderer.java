@@ -38,22 +38,19 @@ public class UIRenderer {
     }
 
     public void drawGameOver(GraphicsContext gc) {
-        // Overlay oscuro
+
         gc.setFill(Color.rgb(0, 0, 0, 0.6));
         gc.fillRect(0, 0, width, height);
 
-        // Texto "GAME OVER"
         gc.setFill(Color.WHITE);
         gc.setFont(Font.font("Arial", FontWeight.BOLD, 80));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText("GAME OVER", width / 2, height / 2 - 40);
 
-        // Botón de restart
         restartBtnX = width / 2 - RESTART_BTN_SIZE / 2;
         restartBtnY = height / 2 + 80;
         gc.drawImage(restartIcon, restartBtnX, restartBtnY, RESTART_BTN_SIZE, RESTART_BTN_SIZE);
 
-        // Texto "Restart"
         gc.setFont(Font.font("Arial", 20));
         gc.fillText("Restart", width / 2, restartBtnY + RESTART_BTN_SIZE + 30);
     }

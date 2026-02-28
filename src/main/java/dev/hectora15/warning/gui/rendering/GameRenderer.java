@@ -1,7 +1,10 @@
 package dev.hectora15.warning.gui.rendering;
 
+import dev.hectora15.warning.traps.SpikeTrap;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -9,6 +12,8 @@ import dev.hectora15.warning.core.GameCore;
 import dev.hectora15.warning.core.Player;
 import dev.hectora15.warning.core.TrapManager;
 import dev.hectora15.warning.enums.TrapState;
+
+import java.util.Objects;
 
 public class GameRenderer {
 
@@ -21,12 +26,40 @@ public class GameRenderer {
     private final double width;
     private final double height;
 
+    private ImagePattern spikeUpPattern;
+    private ImagePattern spikeDownPattern;
+    private ImagePattern spikeLeftPattern;
+    private ImagePattern spikeRightPattern;
+
+    private Image spikeWarningTop;
+    private Image spikeWarningBottom;
+    private Image spikeWarningLeft;
+    private Image spikeWarningRight;
+
+
     public GameRenderer(GameCore gameCore, GraphicsContext gc, UIRenderer uiRenderer) {
         this.gameCore = gameCore;
         this.gc = gc;
         this.uiRenderer = uiRenderer;
         this.width = gameCore.getBoundWidth();
         this.height = gameCore.getBoundHeight();
+
+        Image spikeUpImg    = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeUp.png")));
+        Image spikeDownImg  = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeDown.png")));
+        Image spikeLeftImg  = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeLeft.png")));
+        Image spikeRightImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeRight.png")));
+
+        // Cargar imágenes de Warnings
+        this.spikeWarningTop    = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeWarningTop.png")));
+        this.spikeWarningBottom = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeWarningBottom.png")));
+        this.spikeWarningLeft   = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeWarningLeft.png")));
+        this.spikeWarningRight  = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/traps/spikes/SpikeWarningRight.png")));
+
+        // Convertir a mosaico SOLO los pinchos
+        this.spikeUpPattern    = new ImagePattern(spikeUpImg, 0, 0, 30, 30, false);
+        this.spikeDownPattern  = new ImagePattern(spikeDownImg, 0, 0, 30, 30, false);
+        this.spikeLeftPattern  = new ImagePattern(spikeLeftImg, 0, 0, 30, 30, false);
+        this.spikeRightPattern = new ImagePattern(spikeRightImg, 0, 0, 30, 30, false);
     }
 
     public void render(double alpha, DragState dragState, LaunchConfig launchConfig) {
@@ -64,14 +97,70 @@ public class GameRenderer {
         // Traps
         TrapManager trapManager = gameCore.getTrapManager();
         trapManager.getActiveTraps().forEach(trap -> {
-            if (trap.getState() == TrapState.WARNING) {
-                gc.setFill(Color.YELLOW);
-            } else if (trap.getState() == TrapState.ACTIVE) {
-                gc.setFill(Color.RED);
-            } else {
-                gc.setFill(Color.GRAY);
+
+            if (trap.getState() == TrapState.DESTROYED) {
+                return;
             }
-            gc.fillRect(trap.getX(), trap.getY(), trap.getWidth(), trap.getHeight());
+            String posName = trap.getPosition().name();
+
+            if (trap.getState() == TrapState.WARNING) {
+
+                if (trap instanceof SpikeTrap spikeTrap) {
+                    int currentFrame = spikeTrap.getFramesAlive();
+                    int totalDuration = spikeTrap.getWarningDuration();
+                    int phaseLength = totalDuration / 6;
+                    int currentPhase = currentFrame / phaseLength;
+
+                    if (currentPhase % 2 == 0) {
+                        Image warningImg = null;
+
+                        if (posName.startsWith("BOTTOM")) {
+                            warningImg = spikeWarningBottom;
+                        } else if (posName.startsWith("TOP")) {
+                            warningImg = spikeWarningTop;
+
+                        } else if (posName.startsWith("LEFT")) {
+                            warningImg = spikeWarningLeft;
+                        } else if (posName.startsWith("RIGHT")) {
+                            warningImg = spikeWarningRight;
+                        }
+
+                        if (warningImg != null) {
+                            double iconSize = 30;
+                            double centerX = trap.getX() + (trap.getWidth() / 2) - (iconSize / 2);
+                            double centerY = trap.getY() + (trap.getHeight() / 2) - (iconSize / 2);
+
+                            if (posName.startsWith("BOTTOM")) {
+                                centerY -= ((SpikeTrap) trap).getTHICKNESS();
+                            } else if (posName.startsWith("TOP")) {
+                                centerY += ((SpikeTrap) trap).getTHICKNESS();
+
+                            } else if (posName.startsWith("LEFT")) {
+                                centerX += ((SpikeTrap) trap).getTHICKNESS();
+                            } else if (posName.startsWith("RIGHT")) {
+                                centerX -= ((SpikeTrap) trap).getTHICKNESS();
+                            }
+
+                            gc.drawImage(warningImg, centerX, centerY, iconSize, iconSize);
+                        }
+                    }
+                }
+            } else if (trap.getState() == TrapState.ACTIVE) {
+
+
+                if (posName.startsWith("BOTTOM")) {
+                    gc.setFill(spikeUpPattern);
+                } else if (posName.startsWith("TOP")) {
+                    gc.setFill(spikeDownPattern);
+                } else if (posName.startsWith("LEFT")) {
+                    gc.setFill(spikeRightPattern);
+                } else if (posName.startsWith("RIGHT")) {
+                    gc.setFill(spikeLeftPattern);
+                }
+                gc.fillRect(trap.getX(), trap.getY(), trap.getWidth(), trap.getHeight());
+            }
+
+
         });
     }
 
