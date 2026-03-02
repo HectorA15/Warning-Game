@@ -29,7 +29,7 @@ public class TrapManager {
         }
     }
 
-    public void spawnRandomTrap(GameBounds bounds) {
+    public void spawnRandomTrap(GameBounds bounds, int difficultyLevel) {
         if (activeTraps.size() >= 12) {
             return;
         }
@@ -49,15 +49,15 @@ public class TrapManager {
             }
         } while (occupied);
 
-        activeTraps.add(new SpikeTrap(posTrap, bounds));
+        activeTraps.add(new SpikeTrap(posTrap, bounds, difficultyLevel));
     }
 
-    public void forceSpawn(PosTrap pos, GameBounds bounds) {
+    public void forceSpawn(PosTrap pos, GameBounds bounds, int difficultyLevel) {
         boolean occupied = activeTraps.stream()
                 .anyMatch(t -> t.getPosition() == pos && t.getState() != TrapState.DESTROYED);
 
         if (!occupied) {
-            activeTraps.add(new SpikeTrap(pos, bounds));
+            activeTraps.add(new SpikeTrap(pos, bounds, difficultyLevel));
         }
     }
 

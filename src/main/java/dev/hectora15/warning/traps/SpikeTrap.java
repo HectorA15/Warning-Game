@@ -8,13 +8,22 @@ import dev.hectora15.warning.enums.TrapState;
 public class SpikeTrap extends Trap {
 
     private int framesAlive = 0;
-    private static int warningDuration = 100;
-    private static int activeDuration = 240;
+    private static final int BASE_WARNING_DURATION = 100;
+    private static final int BASE_ACTIVE_DURATION = 240;
     private static final double THICKNESS = 25.0;
-    public SpikeTrap(PosTrap position, GameBounds bounds) {
+
+    public SpikeTrap(PosTrap position, GameBounds bounds, int difficultyLevel) {
         super(position);
         calculateHitbox(bounds);
+        adjustDurationsByDifficulty(difficultyLevel);
+    }
 
+    private void adjustDurationsByDifficulty(int difficultyLevel) {
+        // Reducir las duraciones según el nivel de dificultad
+        // Cada nivel reduce un 8% la duración (mínimo de 30 frames)
+        double reductionFactor = Math.pow(0.92, difficultyLevel);
+        this.warningDuration = Math.max(30, (int) (BASE_WARNING_DURATION * reductionFactor));
+        this.activeDuration = Math.max(30, (int) (BASE_ACTIVE_DURATION * reductionFactor));
     }
 
     @Override
@@ -123,12 +132,12 @@ public class SpikeTrap extends Trap {
         this.framesAlive++;
         if(this.currentState == TrapState.WARNING){
 
-            if (this.framesAlive >= warningDuration) {
+            if (this.framesAlive >= this.warningDuration) {
                 this.currentState = TrapState.ACTIVE;
                 this.framesAlive = 0;
             }
 
-        }else if(this.currentState == TrapState.ACTIVE && this.framesAlive >= activeDuration){
+        }else if(this.currentState == TrapState.ACTIVE && this.framesAlive >= this.activeDuration){
 
                 this.currentState = TrapState.DESTROYED;
 
@@ -151,7 +160,7 @@ public class SpikeTrap extends Trap {
     }
 
     public int getWarningDuration() {
-        return warningDuration;
+        return this.warningDuration;
     }
 
     public double getTHICKNESS() {
